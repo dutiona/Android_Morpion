@@ -1,20 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<style type="text/css">
+    body{
+        background: black;
+    }
+</style>
 </head>
-<body>
-    <p>YAY</p>
-    <input type="button" value="Say hello" onClick="showToast('Hello Android!')" />
 
-    <div id="meh"></div>
+<body>
+    <table id="grid">
+        <tr id="row-0">
+            <td class="col-0"></td>
+            <td class="col-1"></td>
+            <td class="col-2"></td>
+        </tr>
+
+        <tr id="row-1">
+            <td class="col-0"></td>
+            <td class="col-1"></td>
+            <td class="col-2"></td>
+        </tr>
+
+        <tr id="row-2">
+            <td class="col-0"></td>
+            <td class="col-1"></td>
+            <td class="col-2"></td>
+        </tr>
+    </table>
 <script type="text/javascript">
 function showToast(toast) {
     Android.showToast(toast);
 }
-function alertJS(text) {
-    document.getElementById("meh").innerHTML = text;
+
+function addGridElem(row, col, el){
+    var cel = document.querySelector("#grid #row-" + row + " .col-" + col);
+
+    while (cel.firstChild)
+        cel.removeChild(cel.firstChild);
+
+    cel.appendChild(el == "circle" ? window.img_circle : window.img_cross);
+
+    Android.addGridElem(row, col, el);
 }
+
+window.onload = function(){
+    window.img_cross = document.createElement("img");
+    window.img_cross.setAttribute("src", "file:///android_res/drawable/cross.png");
+
+    window.img_circle = document.createElement("img");
+    window.img_circle.setAttribute("src", "file:///android_res/drawable/circle.png");
+};
 </script>
 </body>
 </html>

@@ -16,6 +16,8 @@ public class Morpion extends AppCompatActivity {
 
     private static final String TAG = "Morpion";
 
+    private Grid grid_;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +34,14 @@ public class Morpion extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callJavaScript(webView, "alertJS", "mehhh !");
+                callJavaScript(webView, "addGridElem", 1, 1, "cross");
             }
         });
 
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                callJavaScript(webView, "alertJS", "mehhh !");
+                callJavaScript(webView, "addGridElem", 1, 1, "cross");
                 return true;
             }
         });
@@ -65,6 +67,10 @@ public class Morpion extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public Grid getGrid(){
+        return grid_;
     }
 
     private void callJavaScript(WebView view, String methodName, Object...params){
