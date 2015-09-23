@@ -17,34 +17,61 @@ public class Morpion extends AppCompatActivity {
     private static final String TAG = "Morpion";
 
     private Grid grid_;
+    private WebAppInterface webAppInterface_;
+    private WebView webView_;
+
+    public Grid getGrid(){
+        return grid_;
+    }
+    public WebAppInterface getWebAppInterface(){
+        return webAppInterface_;
+    }
+    public WebView getWebView(){
+        return webView_;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morpion);
 
-        final WebView webView = (WebView) findViewById(R.id.Main);
-        webView.loadUrl("file:///android_res/raw/grid.html");
+        //Initialisation
+        grid_ = new Grid(3);
+        webAppInterface_ = new WebAppInterface(this);
+        webView_ = (WebView) findViewById(R.id.Main);
 
-        WebSettings webSettings = webView.getSettings();
+        Log.i(TAG, "Initialisation terminée");
+
+        //Chargement de la grille
+        webView_.loadUrl("file:///android_res/raw/grid.html");
+
+        Log.i(TAG, "Chargement de la grille terminé");
+
+        //Activation du javascript, on set la classe qui servira de Handler
+        WebSettings webSettings = webView_.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        webView_.addJavascriptInterface(webAppInterface_, "Android");
 
+        Log.i(TAG, "Initialisation du handler webApp terminé");
+
+        //Ajout des évenements
         Button button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callJavaScript(webView, "addGridElem", 1, 1, "cross");
+                callJavaScript(webView_, "addGridElem", 1, 1, "cross");
             }
         });
 
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                callJavaScript(webView, "addGridElem", 1, 1, "cross");
+                callJavaScript(webView_, "addGridElem", 1, 1, "cross");
                 return true;
             }
         });
+
+        Log.i(TAG, "Bind des listener terminé");
     }
 
     @Override
@@ -67,10 +94,6 @@ public class Morpion extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public Grid getGrid(){
-        return grid_;
     }
 
     private void callJavaScript(WebView view, String methodName, Object...params){

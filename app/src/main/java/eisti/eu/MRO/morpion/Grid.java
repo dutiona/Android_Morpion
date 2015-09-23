@@ -12,6 +12,7 @@ public class Grid {
     private CelElement grid_[][];
 
     Grid(int size){
+        grid_ = new CelElement[size][size];
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
                 grid_[i][j] = CelElement.Empty;
