@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <p>YAY</p>
+    <input type="button" value="Say hello" onClick="showToast('Hello Android!')" />
+
+    <div id="meh"></div>
+<script type="text/javascript">
+function showToast(toast) {
+    Android.showToast(toast);
+}
+function alertJS(text) {
+    document.getElementById("meh").innerHTML = text;
+}
+</script>
+</body>
+</html>
