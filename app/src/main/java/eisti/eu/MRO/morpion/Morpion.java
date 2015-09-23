@@ -11,10 +11,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class Morpion extends AppCompatActivity {
 
@@ -27,28 +23,26 @@ public class Morpion extends AppCompatActivity {
 
         final WebView webView = (WebView) findViewById(R.id.Main);
         webView.loadUrl("file:///android_res/raw/grid.html");
-        //webView.loadData(readRawTextFile(R.raw.grid), "text/html", "utf8");
-//
-        //WebSettings webSettings = webView.getSettings();
-        //webSettings.setJavaScriptEnabled(true);
-//
-        //webView.addJavascriptInterface(new WebAppInterface(this), "Android");
-//
-        //Button button = (Button)findViewById(R.id.button);
-        //button.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        callJavaScript(webView, "alertJS", "mehhh !");
-        //    }
-        //});
-//
-        //button.setOnTouchListener(new View.OnTouchListener() {
-        //    @Override
-        //    public boolean onTouch(View v, MotionEvent event) {
-        //        callJavaScript(webView, "alertJS", "mehhh !");
-        //        return true;
-        //    }
-        //});
+
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callJavaScript(webView, "alertJS", "mehhh !");
+            }
+        });
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                callJavaScript(webView, "alertJS", "mehhh !");
+                return true;
+            }
+        });
     }
 
     @Override
@@ -71,25 +65,6 @@ public class Morpion extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public String readRawTextFile(int resId) {
-        InputStream inputStream = this.getResources().openRawResource(resId);
-
-        InputStreamReader inputReader = new InputStreamReader(inputStream);
-        BufferedReader buffReader = new BufferedReader(inputReader);
-        String line;
-        StringBuilder text = new StringBuilder();
-
-        try {
-            while ((line = buffReader.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-        } catch (IOException e) {
-            return null;
-        }
-        return text.toString();
     }
 
     private void callJavaScript(WebView view, String methodName, Object...params){
