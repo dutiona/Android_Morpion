@@ -10,14 +10,14 @@ import android.widget.Toast;
 /**
  * Created by Michaël on 23/09/2015.
  */
-public class WebAppInterface {
+public class WebApp {
 
     private static final String TAG = "Morpion_WebAppInterface";
 
-    private Morpion ctx_;
+    private MorpionActivity ctx_;
     private Handler handler_;
 
-    WebAppInterface(Morpion c){
+    WebApp(MorpionActivity c){
         ctx_ = c;
     }
 
@@ -57,7 +57,7 @@ public class WebAppInterface {
                 handler_ = new Handler();
                 handler_.postDelayed(new Runnable() {
                     public void run() {
-                        ctx_.notifyNextGame(GameEngine.PlayerType.Human);
+                        //ctx_.notifyNextGame(GameEngine.PlayerType.Human);
                         callJavaScript(ctx_.getWebView(), "triggerCleanup");
                     }
                 }, 3000);

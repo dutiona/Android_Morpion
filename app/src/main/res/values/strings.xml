@@ -3,10 +3,18 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="Game_counter_label">Partie(s)</string>
-    <string name="Score_opponent_label">Adversaire</string>
-    <string name="Score_player_label">Vous</string>
+    <string name="game_counter_label">Partie(s)</string>
+    <string name="score_opponent_label">Adversaire</string>
+    <string name="score_player_label">Vous</string>
 
-    <string name="toast_cell_already_used">"Quelqu'un a déjà joué sur cette case !"</string>
-    <string name="player_win">Vous avez gagné !</string>
+    <string name="toast_cell_already_used">Cette case est déjà prise !</string>
+    <string name="player_win">Vous avez gagné \o/ !</string>
+    <string name="computer_win">Vous avez perdu :( !</string>
+    <string name="button_easy">Facile</string>
+    <string name="button_normal">Normal</string>
+    <string name="button_impossible">Impossible</string>
+    <string name="first_game_message">La partie va commencer…</string>
+    <string name="score_player_default">0</string>
+    <string name="game_counter_default">0</string>
+    <string name="score_opponent_default">0</string>
 </resources>

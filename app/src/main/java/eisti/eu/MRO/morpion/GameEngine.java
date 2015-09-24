@@ -15,23 +15,28 @@ public class GameEngine{
         None //Utilisé pour le résultat de GameFinished
     }
 
-
-    private PlayerType currentPlayer_;
-    private Morpion ctx_;
-
     private static ArrayList<Grid> winningGridList_ = new ArrayList<Grid>();
+
+    private PlayerType current_player_;
+    private int score_player_;
+    private int score_opponent_;
+    private int game_counter_;
+
+    private MorpionActivity ctx_;
+
+
 
     public static PlayerType getOppositePlayer(PlayerType player){
         return player == PlayerType.Computer ? PlayerType.Human : PlayerType.Computer;
     }
 
-    public GameEngine(PlayerType starting_player, Morpion ctx){
-        currentPlayer_ = starting_player;
+    public GameEngine(PlayerType starting_player, MorpionActivity ctx){
+        current_player_ = starting_player;
         ctx_ = ctx;
     }
 
     public PlayerType whoseTurnIsIt(){
-        return currentPlayer_;
+        return current_player_;
     }
 
     public PlayerType gameFinished(){
@@ -54,7 +59,7 @@ public class GameEngine{
     }
 
     public void setCurrentTurn(PlayerType player){
-        currentPlayer_ = player;
+        current_player_ = player;
     }
 
     public Pair<Integer, Integer> doComputerTurn(){
@@ -78,7 +83,7 @@ public class GameEngine{
         return true;
     }
 
-    private void lazyInit(){
+    private static void lazyInit(){
         /*
         Sur une grille type
         [[0,0], [0,1], [0,2]]

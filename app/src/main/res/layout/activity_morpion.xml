@@ -1,70 +1,166 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" encoding="utf-8"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".Morpion"
-    android:id="@+id/MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".Morpion"
+    android:id="@+id/main_layout"
+    android:background="@color/background_main">
 
-    <WebView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Grid"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/Score_player_label" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:id="@+id/web_view_layout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Score_player"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|center_horizontal"
+            android:id="@+id/web_view" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Game_counter"
-        android:layout_alignBottom="@+id/Score_player"
-        android:layout_centerHorizontal="true" />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Score_opponent"
-        android:layout_alignBottom="@+id/Game_counter"
-        android:layout_alignRight="@+id/Grid"
-        android:layout_alignEnd="@+id/Grid" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal|fill"
+        android:weightSum="99"
+        android:id="@+id/difficulty_layout" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Score_player_label"
-        android:id="@+id/Score_player_label"
-        android:layout_above="@+id/Score_player"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:text="@string/button_easy"
+            android:textOn="@string/button_easy"
+            android:textOff="@string/button_easy"
+            android:id="@+id/button_easy"
+            android:textColor="@color/text_main"
+            android:background="@drawable/toggle_button"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Game_counter_label"
-        android:id="@+id/Game_counter_label"
-        android:layout_above="@+id/Game_counter"
-        android:layout_centerHorizontal="true" />
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/button_normal"
+            android:textOn="@string/button_normal"
+            android:textOff="@string/button_normal"
+            android:id="@+id/button_normal"
+            android:textColor="@color/text_main"
+            android:background="@drawable/toggle_button"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Score_opponent_label"
-        android:id="@+id/Score_opponent_label"
-        android:layout_above="@+id/Score_opponent"
-        android:layout_alignRight="@+id/Grid"
-        android:layout_alignEnd="@+id/Grid" />
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/button_impossible"
+            android:textOn="@string/button_impossible"
+            android:textOff="@string/button_impossible"
+            android:id="@+id/button_impossible"
+            android:textColor="@color/text_main"
+            android:background="@drawable/toggle_button"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal|fill"
+        android:weightSum="99"
+        android:id="@+id/score_label_layout">
 
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/score_player_label"
+            android:id="@+id/score_player_label"
+            android:textColor="@color/text_main"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/game_counter_label"
+            android:id="@+id/game_counter_label"
+            android:textColor="@color/text_main" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/score_opponent_label"
+            android:id="@+id/score_opponent_label"
+            android:textColor="@color/text_main"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="45"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal|fill"
+            android:weightSum="99"
+            android:id="@+id/score_layout">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:text="@string/score_player_default"
+                android:id="@+id/score_player"
+                android:textColor="@color/text_main"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/game_counter_default"
+                android:id="@+id/game_counter"
+                android:textColor="@color/text_main"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="@string/score_opponent_default"
+                android:id="@+id/score_opponent"
+                android:textColor="@color/text_main"/>
+
+        </LinearLayout>
+
+</LinearLayout>
+
