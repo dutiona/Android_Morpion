@@ -11,7 +11,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-
+/**
+ * Point d'entrée de l'application.
+ * Instancie les modèles, les vues et les controlers et lie le tout entre eux.
+ */
 public class Morpion extends AppCompatActivity {
 
     private static final String TAG = "Morpion";
