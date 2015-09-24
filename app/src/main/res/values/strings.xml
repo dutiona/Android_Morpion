@@ -14,6 +14,7 @@
     <string name="button_normal">Normal</string>
     <string name="button_impossible">Impossible</string>
     <string name="first_game_message">La partie va commencer…</string>
+    <string name="next_game_message">La partie suivante va commencer…</string>
     <string name="score_player_default">0</string>
     <string name="game_counter_default">0</string>
     <string name="score_opponent_default">0</string>

@@ -3,6 +3,7 @@ package eisti.eu.MRO.morpion;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -50,47 +51,51 @@ public class MorpionActivity extends AppCompatActivity {
      */
 
     //Models
-    public Grid getGrid(){
+    public Grid getGrid() {
         return grid_;
     }
-    public GameEngine getGameEngine(){
+
+    public GameEngine getGameEngine() {
         return game_engine_;
     }
 
     //Controler
-    public WebApp getWebAppInterface(){
+    public WebApp getWebApp() {
         return web_app_;
     }
-    public DifficultyConsistency getDifficultyConsistency(){
+
+    public DifficultyConsistency getDifficultyConsistency() {
         return difficulty_consistency_;
     }
 
     //Vues
-    public WebView getWebView(){
+    public WebView getWebView() {
         return web_view_;
     }
 
-    public ToggleButton getButtonEasy(){
+    public ToggleButton getButtonEasy() {
         return button_easy_;
     }
-    public ToggleButton getButtonNormal(){
+
+    public ToggleButton getButtonNormal() {
         return button_normal_;
     }
-    public ToggleButton getButtonImpossible(){
+
+    public ToggleButton getButtonImpossible() {
         return button_impossible_;
     }
 
-    public TextView getGameCounter(){
+    public TextView getGameCounter() {
         return text_game_counter_;
     }
-    public TextView getScorePlayer(){
+
+    public TextView getScorePlayer() {
         return text_score_player_;
     }
-    public TextView getScoreOpponent(){
+
+    public TextView getScoreOpponent() {
         return text_score_opponent_;
     }
-
-
 
 
     @Override
@@ -100,12 +105,16 @@ public class MorpionActivity extends AppCompatActivity {
 
         //Initialisation des models
         grid_ = new Grid(3);
-        game_engine_ = new GameEngine(DEFAULT_FIRST_PLAYER, this);
+        game_engine_ = new GameEngine(this, DEFAULT_FIRST_PLAYER);
+
+        Log.i(TAG, "Initialisation des modèles terminée.");
 
         //Chargement des vues score
         text_score_opponent_ = (TextView) findViewById(R.id.score_opponent);
         text_score_player_ = (TextView) findViewById(R.id.score_player);
         text_game_counter_ = (TextView) findViewById((R.id.game_counter));
+
+        Log.i(TAG, "Chargement des vues des scores terminé.");
 
         //Initialisation de la web view et de son controler
         web_app_ = new WebApp(this);
@@ -115,19 +124,24 @@ public class MorpionActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         web_view_.addJavascriptInterface(web_app_, "Android");
 
+        Log.i(TAG, "Chargement de la vue de la grille terminé.");
+
         //Initialisation des vues button et association du controler de cohérence
         //Le projet est trop petit pour penser à faire un mediator
         button_easy_ = (ToggleButton) findViewById(R.id.button_easy);
         button_normal_ = (ToggleButton) findViewById(R.id.button_normal);
         button_impossible_ = (ToggleButton) findViewById(R.id.button_impossible);
 
-        difficulty_consistency_ = new DifficultyConsistency(DEFAULT_DIFFICULTY, new ArrayList<>(Arrays.asList(button_easy_, button_impossible_, button_normal_)));
+        difficulty_consistency_ = new DifficultyConsistency(this, DEFAULT_DIFFICULTY, new ArrayList<>(Arrays.asList(button_easy_, button_impossible_, button_normal_)));
+
+        Log.i(TAG, "Chargement du controler de difficulté terminé.");
 
         //On lance la première partie 2 secondes après le lancement
         showToast(getString(R.string.first_game_message));
         Handler launcher = new Handler();
         launcher.postDelayed(new Runnable() {
             public void run() {
+                Log.i(TAG, "Lancement de la première partie...");
                 newGame();
             }
         }, 2000);
@@ -157,28 +171,52 @@ public class MorpionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showToast(String text){
+    public void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    public void newGame(){
-        //difficulty_consistency_.updateConsistency();
-        //game_engine_.newGame();
-    }
+    public void finishGame() {
+        //Mettre la bare dans la webView
+        web_app_.showCrossedLine();
 
-    /*
-    public void notifyNextGame(GameEngine.PlayerType winner){
-        TextView score_view;
-        if(winner == GameEngine.PlayerType.Computer){
-            score_view = (TextView) findViewById(R.id.Score_opponent);
-        }else{
-            score_view = (TextView) findViewById(R.id.Score_player);
+
+        //Mettre à jour les scores
+        GameEngine.PlayerType winner = game_engine_.getWinner();
+
+        int incr_score_player = 0;
+        int incr_score_opponent = 0;
+        int incr_game_counter = 0;
+
+        if (winner == GameEngine.PlayerType.None)
+            incr_game_counter++;
+
+        if (winner == GameEngine.PlayerType.Human) {
+            incr_score_player++;
+            incr_game_counter++;
         }
-        TextView game_counter = (TextView) findViewById((R.id.Game_counter));
-        score_view.setText(String.valueOf(Integer.valueOf(score_view.getText().toString()) + 1));
-        game_counter.setText(String.valueOf(Integer.valueOf(game_counter.getText().toString()) + 1));
 
-        gameEngine_ = new GameEngine(GameEngine.getOppositePlayer(winner), this);
+        if (winner == GameEngine.PlayerType.Computer) {
+            incr_score_opponent++;
+            incr_game_counter++;
+        }
+
+        text_game_counter_.setText(String.valueOf(Integer.valueOf(text_game_counter_.getText().toString()) + incr_game_counter));
+        text_score_player_.setText(String.valueOf(Integer.valueOf(text_score_player_.getText().toString()) + incr_score_player));
+        text_score_opponent_.setText(String.valueOf(Integer.valueOf(text_score_opponent_.getText().toString()) + incr_score_opponent));
+
+        //Lance la partie suivante
+        showToast(getString(R.string.next_game_message));
+        Handler launcher = new Handler();
+        launcher.postDelayed(new Runnable() {
+            public void run() {
+                Log.i(TAG, "Lancement de la partie suivante...");
+                newGame();
+            }
+        }, 3000);
     }
-    */
+
+    public void newGame() {
+        web_app_.newGame();
+        game_engine_.newGame();
+    }
 }

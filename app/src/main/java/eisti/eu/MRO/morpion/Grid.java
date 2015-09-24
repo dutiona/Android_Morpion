@@ -5,63 +5,67 @@ package eisti.eu.MRO.morpion;
  */
 public class Grid {
 
-    public enum CelElement{
+    private static final String TAG = "Grid";
+
+    public enum CelElement {
         Circle, Cross, Empty,
         Whatever //utilisé dans le check des combinaisons gagnantes (soit Circle, soit cross -> tableau génériques)
     }
 
     private CelElement grid_[][];
-    private int size_;
 
 
-    public static boolean areValueEquals(CelElement expected, CelElement lhs, CelElement rhs){
-        return lhs == CelElement.Whatever && rhs == expected;
-    }
-
-    public static CelElement getOppositeCelElement(CelElement cel){
-        return cel == CelElement.Circle ? CelElement.Cross : CelElement.Circle;
-    }
-
-    public Grid(int size){
-        size_ = size;
+    public Grid(int size) {
         grid_ = new CelElement[size][size];
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 grid_[i][j] = CelElement.Empty;
             }
         }
     }
 
-    public int getSize(){
-        return size_;
+    public int getSize() {
+        return grid_.length;
     }
 
-    public boolean isEmpty(int row, int col){
+    public boolean isEmpty(int row, int col) {
         return grid_[row][col] == CelElement.Empty;
     }
 
-    public boolean isCircle(int row, int col){
+    public boolean isCircle(int row, int col) {
         return grid_[row][col] == CelElement.Circle;
     }
 
-    public boolean isCross(int row, int col){
+    public boolean isCross(int row, int col) {
         return grid_[row][col] == CelElement.Circle;
     }
 
-    public CelElement getValue(int row, int col){
+    public boolean isWhatever(int row, int col) {
+        return grid_[row][col] == CelElement.Whatever;
+    }
+
+    public CelElement getValue(int row, int col) {
         return grid_[row][col];
     }
 
-    public void  setValue(int row, int col, CelElement el){
+    public void setValue(int row, int col, CelElement el) {
         grid_[row][col] = el;
     }
 
-    public boolean setValueSafe(int row, int col, CelElement el){
-        if(isEmpty(row, col)) {
+    public boolean setValueSafe(int row, int col, CelElement el) {
+        if (isEmpty(row, col)) {
             grid_[row][col] = el;
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    public static boolean isCelValueEqual(CelElement expected, CelElement lhs, CelElement rhs) {
+        return lhs == CelElement.Whatever && rhs == expected;
+    }
+
+    public static CelElement getOppositeCelElement(CelElement cel) {
+        return cel == CelElement.Circle ? CelElement.Cross : CelElement.Circle;
     }
 }

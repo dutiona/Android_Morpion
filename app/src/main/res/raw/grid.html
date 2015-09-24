@@ -19,11 +19,11 @@
 if(typeof Android == "undefined"){
     window.Android = {
         showToast : function(text) { alert(text); },
-        addGridElem : function(row, col, el) {},
+        addGridElem : function(row, col, el) { return true; },
         getPlayerElement : function() { return "circle"; },
         canIPlay: function() { return true; },
-        didIWin()): function() { return false; },
-        doComputerTurn(): function() {}
+        didIWin: function() { return false; },
+        doComputerTurn: function() {}
     };
     window.basePath = "../";
 }
@@ -34,6 +34,19 @@ if(typeof Android == "undefined"){
 </head>
 
 <body>
+
+<div id="app">
+    <hr class="crossed-line" id="crossed-line-diag-lt2rb"/>
+    <hr class="crossed-line" id="crossed-line-diag-rt2lb"/>
+
+    <hr class="crossed-line" id="crossed-line-vert-tl"/>
+    <hr class="crossed-line" id="crossed-line-vert-ml"/>
+    <hr class="crossed-line" id="crossed-line-vert-bl"/>
+
+    <hr class="crossed-line" id="crossed-line-hori-ll"/>
+    <hr class="crossed-line" id="crossed-line-hori-ml"/>
+    <hr class="crossed-line" id="crossed-line-hori-rl"/>
+
     <table id="grid">
         <tr id="row-0">
             <td class="col-0"></td>
@@ -53,5 +66,7 @@ if(typeof Android == "undefined"){
             <td class="col-2"></td>
         </tr>
     </table>
+</div>
+
 </body>
 </html>

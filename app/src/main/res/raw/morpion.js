@@ -21,6 +21,55 @@ function triggerCleanup(){
     $("#grid tr td").each(function(){
         $(this).empty();
     });
+
+    var animation_duration = 500; //ms
+
+    $("#grid .crossed-line").each(function(){
+        $(this).hide(animation_duration);
+    });
+}
+
+function triggerCrossedLine(combination){
+
+    var animation_duration = 2000; //ms
+
+    //Colonne
+
+    //Diag haut gauche -> bas droite
+    if(combination[0] == [0, 0] && combination[1] == [1, 1] && combination[2] == [2, 2])
+        $("#crossed-line-diag-lt2rb").show(animation_duration);
+
+    //Diag haut droite -> bas gauche
+    if(combination[0] == [2, 0] && combination[1] == [1, 1] && combination[2] == [0, 2])
+        $("#crossed-line-diag-rt2lb").show(animation_duration);
+
+    //Ligne
+
+    //Ligne du haut
+    if(combination[0] == [0, 0] && combination[1] == [0, 1] && combination[2] == [0, 2])
+        $("#crossed-line-hori-tl").show(animation_duration);
+
+    //Ligne du milieu
+    if(combination[0] == [1, 0] && combination[1] == [1, 1] && combination[2] == [1, 2])
+        $("#crossed-line-hori-ml").show(animation_duration);
+
+    //Ligne du bas
+    if(combination[0] == [2, 0] && combination[1] == [2, 1] && combination[2] == [2, 2])
+        $("#crossed-line-hori-bl").show(animation_duration);
+
+    //Colonne
+
+    //Colonne de gauche
+    if(combination[0] == [0, 0] && combination[1] == [1, 0] && combination[2] == [2, 0])
+        $("#crossed-line-vert-ll").show(animation_duration);
+
+    //Ligne du bas
+    if(combination[0] == [0, 1] && combination[1] == [1, 1] && combination[2] == [2, 1])
+        $("#crossed-line-vert-ml").show(animation_duration);
+
+    //Ligne du bas
+    if(combination[0] == [0, 2] && combination[1] == [1,21] && combination[2] == [2, 2])
+        $("#crossed-line-vert-rl").show(animation_duration);
 }
 
 $("document").ready(function(){
@@ -34,7 +83,6 @@ $("document").ready(function(){
                 var row = $(this).parent().attr("id").split("-")[1];
                 showToast("Clicked(" + row + ", " + col + ")");
                 addGridElem(Number(row), Number(col), player_element);
-                Android.doComputerTurn();
             };
         });
     });
