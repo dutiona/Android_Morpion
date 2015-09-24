@@ -20,7 +20,10 @@ if(typeof Android == "undefined"){
     window.Android = {
         showToast : function(text) { alert(text); },
         addGridElem : function(row, col, el) {},
-        getPlayerElement : function() { return "circle"; }
+        getPlayerElement : function() { return "circle"; },
+        canIPlay: function() { return true; },
+        didIWin()): function() { return false; },
+        doComputerTurn(): function() {}
     };
     window.basePath = "../";
 }

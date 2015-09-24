@@ -10,6 +10,9 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * Point d'entrée de l'application.
@@ -22,12 +25,18 @@ public class Morpion extends AppCompatActivity {
     public static final Grid.CelElement PLAYER_ELEMENT = Grid.CelElement.Circle;
 
     private Grid grid_;
+    private GameEngine gameEngine_;
+
     private WebAppInterface webAppInterface_;
     private WebView webView_;
 
     public Grid getGrid(){
         return grid_;
     }
+    public GameEngine getGameEngine(){
+        return gameEngine_;
+    }
+
     public WebAppInterface getWebAppInterface(){
         return webAppInterface_;
     }
@@ -40,8 +49,11 @@ public class Morpion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morpion);
 
-        //Initialisation
+        //Initialisation des modèles
         grid_ = new Grid(3);
+        gameEngine_ = new GameEngine(GameEngine.PlayerType.Human, this);
+
+
         webAppInterface_ = new WebAppInterface(this);
         webView_ = (WebView) findViewById(R.id.Grid);
 
@@ -58,6 +70,14 @@ public class Morpion extends AppCompatActivity {
         webView_.addJavascriptInterface(webAppInterface_, "Android");
 
         Log.i(TAG, "Initialisation du handler webApp terminé");
+
+        TextView score_opponent = (TextView) findViewById(R.id.Score_opponent);
+        TextView score_player = (TextView) findViewById(R.id.Score_player);
+        TextView game_counter = (TextView) findViewById((R.id.Game_counter));
+
+        score_opponent.setText("0");
+        score_player.setText("0");
+        game_counter.setText("0");
     }
 
     @Override
@@ -82,28 +102,17 @@ public class Morpion extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void callJavaScript(WebView view, String methodName, Object...params){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("javascript:try{");
-        stringBuilder.append(methodName);
-        stringBuilder.append("(");
-        String separator = "";
-        for (Object param : params) {
-            stringBuilder.append(separator);
-            separator = ",";
-            if(param instanceof String){
-                stringBuilder.append("'");
-            }
-            stringBuilder.append(param);
-            if(param instanceof String){
-                stringBuilder.append("'");
-            }
-
+    public void notifyNextGame(GameEngine.PlayerType winner){
+        TextView score_view;
+        if(winner == GameEngine.PlayerType.Computer){
+            score_view = (TextView) findViewById(R.id.Score_opponent);
+        }else{
+            score_view = (TextView) findViewById(R.id.Score_player);
         }
-        stringBuilder.append(")}catch(error){console.error(error.message);}");
-        final String call = stringBuilder.toString();
-        Log.i(TAG, "callJavaScript: call="+call);
+        TextView game_counter = (TextView) findViewById((R.id.Game_counter));
+        score_view.setText(String.valueOf(Integer.valueOf(score_view.getText().toString()) + 1));
+        game_counter.setText(String.valueOf(Integer.valueOf(game_counter.getText().toString()) + 1));
 
-        view.loadUrl(call);
+        gameEngine_ = new GameEngine(GameEngine.getOppositePlayer(winner), this);
     }
 }

@@ -6,18 +6,34 @@ package eisti.eu.MRO.morpion;
 public class Grid {
 
     public enum CelElement{
-        Circle, Cross, Empty
+        Circle, Cross, Empty,
+        Whatever //utilisé dans le check des combinaisons gagnantes (soit Circle, soit cross -> tableau génériques)
     }
 
     private CelElement grid_[][];
+    private int size_;
 
-    Grid(int size){
+
+    public static boolean areValueEquals(CelElement expected, CelElement lhs, CelElement rhs){
+        return lhs == CelElement.Whatever && rhs == expected;
+    }
+
+    public static CelElement getOppositeCelElement(CelElement cel){
+        return cel == CelElement.Circle ? CelElement.Cross : CelElement.Circle;
+    }
+
+    public Grid(int size){
+        size_ = size;
         grid_ = new CelElement[size][size];
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++){
                 grid_[i][j] = CelElement.Empty;
             }
         }
+    }
+
+    public int getSize(){
+        return size_;
     }
 
     public boolean isEmpty(int row, int col){
