@@ -28,7 +28,7 @@ public class WebAppInterface {
     public void addGridElem(int row, int col, String el){
         Log.i(TAG, "Ajout grid element : (" + row + ", " + col + ")=" + el);
         if(!ctx_.getGrid().setValueSafe(row, col, el == "circle" ? Grid.CelElement.Circle : Grid.CelElement.Cross)) {
-            showToast("Quelqu'un a déjà joué a sur cette case !");
+            showToast(ctx_.getResources().getString(R.string.toast_cell_already_used));
         }
     }
 }
