@@ -31,4 +31,9 @@ public class WebAppInterface {
             showToast(ctx_.getResources().getString(R.string.toast_cell_already_used));
         }
     }
+
+    @JavascriptInterface
+    public String getPlayerElement(){
+        return ctx_.PLAYER_ELEMENT == Grid.CelElement.Circle ? "circle" : "cross";
+    }
 }

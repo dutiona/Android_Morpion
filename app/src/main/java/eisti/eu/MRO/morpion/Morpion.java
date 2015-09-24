@@ -16,6 +16,8 @@ public class Morpion extends AppCompatActivity {
 
     private static final String TAG = "Morpion";
 
+    public static final Grid.CelElement PLAYER_ELEMENT = Grid.CelElement.Circle;
+
     private Grid grid_;
     private WebAppInterface webAppInterface_;
     private WebView webView_;
@@ -38,7 +40,7 @@ public class Morpion extends AppCompatActivity {
         //Initialisation
         grid_ = new Grid(3);
         webAppInterface_ = new WebAppInterface(this);
-        webView_ = (WebView) findViewById(R.id.Main);
+        webView_ = (WebView) findViewById(R.id.Grid);
 
         Log.i(TAG, "Initialisation terminée");
 
@@ -53,25 +55,6 @@ public class Morpion extends AppCompatActivity {
         webView_.addJavascriptInterface(webAppInterface_, "Android");
 
         Log.i(TAG, "Initialisation du handler webApp terminé");
-
-        //Ajout des évenements
-        Button button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callJavaScript(webView_, "addGridElem", 1, 1, "cross");
-            }
-        });
-
-        button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                callJavaScript(webView_, "addGridElem", 1, 1, "cross");
-                return true;
-            }
-        });
-
-        Log.i(TAG, "Bind des listener terminé");
     }
 
     @Override

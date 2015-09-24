@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Morpion</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="button_meh">JSMeh !</string>
+
+    <string name="Game_counter_label">Partie(s)</string>
+    <string name="Score_opponent_label">Adversaire</string>
+    <string name="Score_player_label">Vous</string>
+
     <string name="toast_cell_already_used">"Quelqu'un a déjà joué sur cette case !"</string>
 </resources>
