@@ -111,7 +111,7 @@ public class GameEngine {
                 }, 2000);
             } else {
                 doPlayerTurn();
-                //C'est le controler WebApp qui appellera le swapTurn quand le joueur aura joué
+                //C'est le engin WebApp qui appellera le swapTurn quand le joueur aura joué
             }
 
         }

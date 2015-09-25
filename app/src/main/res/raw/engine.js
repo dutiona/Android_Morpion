@@ -81,7 +81,7 @@ $("document").ready(function(){
             if(Android.canIPlay()){
                 var col = $(this).attr("class").split("-")[1];
                 var row = $(this).parent().attr("id").split("-")[1];
-                showToast("Clicked(" + row + ", " + col + ")");
+                //showToast("Clicked(" + row + ", " + col + ")");
                 addGridElem(Number(row), Number(col), player_element);
             };
         });

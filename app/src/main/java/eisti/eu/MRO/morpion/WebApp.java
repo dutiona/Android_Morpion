@@ -36,7 +36,7 @@ public class WebApp {
 
     @JavascriptInterface
     public boolean addGridElem(int row, int col, String el) {
-        Log.i(TAG, "Ajout grid element : (" + row + ", " + col + ")=" + el);
+        Log.i(TAG, "Ajout index element : (" + row + ", " + col + ")=" + el);
         boolean allowed = context_.getGrid().setValueSafe(row, col, el == "circle" ? Grid.CelElement.Circle : Grid.CelElement.Cross);
         if (!allowed) {
             showToast(context_.getResources().getString(R.string.toast_cell_already_used));

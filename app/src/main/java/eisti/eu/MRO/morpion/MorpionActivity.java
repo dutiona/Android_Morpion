@@ -116,17 +116,20 @@ public class MorpionActivity extends AppCompatActivity {
 
         Log.i(TAG, "Chargement des vues des scores terminé.");
 
-        //Initialisation de la web view et de son controler
+        //Initialisation de la web view et de son engin
         web_app_ = new WebApp(this);
         web_view_ = (WebView) findViewById(R.id.web_view);
-        web_view_.loadUrl("file:///android_res/raw/grid.html");
         WebSettings webSettings = web_view_.getSettings();
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowFileAccess(true);
         webSettings.setJavaScriptEnabled(true);
         web_view_.addJavascriptInterface(web_app_, "Android");
 
+        web_view_.loadUrl("file:///android_res/raw/grid.html");
+
         Log.i(TAG, "Chargement de la vue de la grille terminé.");
 
-        //Initialisation des vues button et association du controler de cohérence
+        //Initialisation des vues button et association du engin de cohérence
         //Le projet est trop petit pour penser à faire un mediator
         button_easy_ = (ToggleButton) findViewById(R.id.button_easy);
         button_normal_ = (ToggleButton) findViewById(R.id.button_normal);
@@ -134,7 +137,7 @@ public class MorpionActivity extends AppCompatActivity {
 
         difficulty_consistency_ = new DifficultyConsistency(this, DEFAULT_DIFFICULTY, new ArrayList<>(Arrays.asList(button_easy_, button_impossible_, button_normal_)));
 
-        Log.i(TAG, "Chargement du controler de difficulté terminé.");
+        Log.i(TAG, "Chargement du engin de difficulté terminé.");
 
         //On lance la première partie 2 secondes après le lancement
         showToast(getString(R.string.first_game_message));
@@ -164,7 +167,8 @@ public class MorpionActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_exit) {
+            System.exit(0);
             return true;
         }
 
