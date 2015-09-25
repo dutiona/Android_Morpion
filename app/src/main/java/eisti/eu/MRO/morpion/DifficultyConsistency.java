@@ -8,7 +8,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 /**
- * Projet Morpion
+ * Projet : Morpion
  * <p/>
  * Created by Michaël on 24/09/2015.
  * <p/>
@@ -24,13 +24,13 @@ public class DifficultyConsistency implements View.OnTouchListener {
      */
     private final ArrayList<ToggleButton> buttons_;
     /**
-     * Difficulté courante
-     */
-    private DifficultyLevel difficulty_;
-    /**
      * Contexte
      */
     private final MorpionActivity context_;
+    /**
+     * Difficulté courante
+     */
+    private DifficultyLevel difficulty_;
 
     /**
      * @param ctx        contrexte

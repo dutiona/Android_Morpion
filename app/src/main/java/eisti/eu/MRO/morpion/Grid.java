@@ -9,7 +9,7 @@ import android.util.Log;
  * <p/>
  * Class modèle pour une grille de morpion.
  */
-public class Grid {
+public class Grid implements Cloneable {
     /**
      * Tag pour la console
      */
@@ -68,6 +68,21 @@ public class Grid {
      */
     public int getSize() {
         return grid_.length;
+    }
+
+    /**
+     * Compte le nombre de cellules vides dans la grille
+     *
+     * @return nom de cellules vides
+     */
+    public int getEmptyCelNumber() {
+        int num = 0;
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                num += isEmpty(i, j) ? 1 : 0;
+            }
+        }
+        return num;
     }
 
     /**
@@ -201,6 +216,22 @@ public class Grid {
         sb.append("]");
         Log.i(TAG, "JS version=" + sb.toString());
         return sb.toString();
+    }
+
+    /**
+     * Clone la grille
+     *
+     * @return copie de la grille
+     */
+    @Override
+    public Grid clone() {
+        Grid cln = new Grid(getSize());
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                cln.grid_[i][j] = grid_[i][j];
+            }
+        }
+        return cln;
     }
 
     /**

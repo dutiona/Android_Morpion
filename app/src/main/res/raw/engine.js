@@ -3,8 +3,8 @@ function showToast(toast) {
     Android.showToast(toast);
 }
 
-//Ajoute un élément à la grille
-function addGridElem(row, col, el){
+//Ajoute un élément à la grille safe (joueur)
+function addGridElemSafe(row, col, el){
     //Notification au controler Android
     if(Android.addGridElem(row, col, el)){
         $("#row-" + row + " .col-" + col + ":first")
@@ -17,12 +17,22 @@ function addGridElem(row, col, el){
     }
 }
 
+function triggerAddGridElem(row, col, el){
+    $("#row-" + row + " .col-" + col + ":first")
+    .empty()
+    .html(
+        el == "circle"
+        ? $("<img src='" + window.basePath + "drawable/circle.png" + "'/>")
+        : $("<img src='" + window.basePath + "drawable/cross.png" + "'/>")
+    );
+}
+
 function triggerCleanup(){
     $("#grid tr td").each(function(){
         $(this).empty();
     });
 
-    var animation_duration = 500; //ms
+    var animation_duration = 0; //ms
 
     $("#app .crossed-line").each(function(){
         $(this).hide(animation_duration);
@@ -31,7 +41,7 @@ function triggerCleanup(){
 
 function triggerCrossedLine(combination){
 
-    var animation_duration = 1500; //miliseconds
+    var animation_duration = 0; //miliseconds
 
     //Diag haut gauche -> bas droite
     if(combination[0][0] == 'whatever' && combination[1][1] == 'whatever' && combination[2][2] == 'whatever')
@@ -84,7 +94,7 @@ $("document").ready(function(){
                 var col = $(this).attr("class").split("-")[1];
                 var row = $(this).parent().attr("id").split("-")[1];
                 //showToast("Clicked(" + row + ", " + col + ")");
-                addGridElem(Number(row), Number(col), player_element);
+                addGridElemSafe(Number(row), Number(col), player_element);
             };
         });
     });

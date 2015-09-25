@@ -18,36 +18,89 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Point d'entrée de l'application.
- * Instancie les modèles, les vues et les controlers et lie le tout entre eux.
+ * Projet : Morpion
+ * <p/>
+ * Created by Michaël on 22/09/2015.
+ * <p/>
+ * Point d'entrée de l'application. Controler principal
+ * Instancie les modèles, les vues et les controlers auxilières et lie le tout.
  */
 public class MorpionActivity extends AppCompatActivity {
 
-    private static final String TAG = "MorpionActivity";
-
+    /**
+     * Configuration du jeu par défaut
+     * Element que le joueur joue
+     */
     public static final Grid.CelElement PLAYER_ELEMENT = Grid.CelElement.Circle;
+    /**
+     * Configuration du jeu par défaut
+     * Difficulté sélectionnée par défaut
+     */
     public static final DifficultyConsistency.DifficultyLevel DEFAULT_DIFFICULTY = DifficultyConsistency.DifficultyLevel.Normal;
+    /**
+     * Configuration du jeu par défaut
+     * Joueur qui commence à jouer
+     */
     public static final GameEngine.PlayerType DEFAULT_FIRST_PLAYER = GameEngine.PlayerType.Human;
-
+    /**
+     * TAG pour la console
+     */
+    private static final String TAG = "MorpionActivity";
+    /**
+     * Permet de savoir si on peut toaster (l'appli a pas le focus : on toast pas)
+     */
     private boolean is_ui_foreground_;
 
     //Models
+    /**
+     * Grille du jeu
+     */
     private Grid grid_;
+    /**
+     * Moteur du jeu
+     */
     private GameEngine game_engine_;
 
     //Controler
+    /**
+     * Controler de la WebView
+     */
     private WebApp web_app_;
+    /**
+     * Controler de la cohérence de l'affichage de la difficulté
+     */
     private DifficultyConsistency difficulty_consistency_;
 
     //Vues
+    /**
+     * WebView de la grille
+     */
     private WebView web_view_;
 
+    /**
+     * Bouton easy
+     */
     private ToggleButton button_easy_;
+    /**
+     * Bouton normal
+     */
     private ToggleButton button_normal_;
+    /**
+     * Bouton impossible
+     */
     private ToggleButton button_impossible_;
 
+    /**
+     * Compteur du numbre de partie
+     */
     private TextView text_game_counter_;
+    /**
+     * Compteur du score du joueur
+     */
     private TextView text_score_player_;
+    /**
+     * Compteur du score de l'ordinateur
+     */
     private TextView text_score_opponent_;
 
     /*
@@ -55,65 +108,103 @@ public class MorpionActivity extends AppCompatActivity {
      */
 
     //Models
+
+    /**
+     * Retourne la grille
+     *
+     * @return grille
+     */
     public Grid getGrid() {
         return grid_;
     }
 
+    /**
+     * Retourne le moteur de jeu
+     *
+     * @return moteur de jeu
+     */
     public GameEngine getGameEngine() {
         return game_engine_;
     }
 
     //Controler
+
+    /**
+     * Retourne le controler de la web view
+     *
+     * @return controler de la web view
+     */
     public WebApp getWebApp() {
         return web_app_;
     }
 
+    /**
+     * Retourne le controler de la cohérence de difficulté
+     *
+     * @return controler de la cohérence de difficulté
+     */
     public DifficultyConsistency getDifficultyConsistency() {
         return difficulty_consistency_;
     }
 
     //Vues
+
+    /**
+     * Retourne la web view (grille)
+     *
+     * @return web view (grille)
+     */
     public WebView getWebView() {
         return web_view_;
     }
 
+    /**
+     * Retourne le bouton easy
+     *
+     * @return bouton easy
+     */
     public ToggleButton getButtonEasy() {
         return button_easy_;
     }
 
+    /**
+     * Retourne le bouton normal
+     *
+     * @return bouton normal
+     */
     public ToggleButton getButtonNormal() {
         return button_normal_;
     }
 
+    /**
+     * Retourne le bouton impossible
+     *
+     * @return bouton impossible
+     */
     public ToggleButton getButtonImpossible() {
         return button_impossible_;
     }
 
-    public TextView getGameCounter() {
-        return text_game_counter_;
-    }
 
-    public TextView getScorePlayer() {
-        return text_score_player_;
-    }
-
-    public TextView getScoreOpponent() {
-        return text_score_opponent_;
-    }
-
-
-
+    /**
+     * Fonction principale : lance le programme
+     *
+     * @param savedInstanceState élément sérialisé représentant l'état de l'appli
+     */
     @Override
-    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"}) //Avertissement de sécurité concernant l'activation de Javascript
+    //Avertissement de sécurité concernant l'activation de Javascript
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morpion);
 
+        //Si le programme est en intention d'"EXIT" on ne fait rien
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
-            return; // add this to prevent from doing unnecessary stuffs
+            return;
         }
 
+        //On est en premier plan
         is_ui_foreground_ = true;
 
         //Initialisation des models
@@ -163,7 +254,12 @@ public class MorpionActivity extends AppCompatActivity {
         }, 2000);
     }
 
-    //Méthode générée par défaut
+    /**
+     * Méthode générée par défaut : désérialise la création du menu
+     *
+     * @param menu menu à desérialiser
+     * @return vrai si on affiche le menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -171,7 +267,12 @@ public class MorpionActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //Méthode générée par défaut
+    /**
+     * Listener du menu
+     *
+     * @param item item sélectionné
+     * @return vrai si on consome l'élément (le menu se referme après)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -182,7 +283,7 @@ public class MorpionActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             //Pas bien de faire comme ça !
-            System.exit(0);
+            //System.exit(0);
             //Il vaut mieux faire comme ça !
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
@@ -196,24 +297,36 @@ public class MorpionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Event trigger quand l'appli revient au premier plan
+     */
     @Override
     protected void onResume() {
         super.onResume();
         is_ui_foreground_ = true;
     }
 
+    /**
+     * Event trigger quand l'appli est mise en pause
+     */
     @Override
     protected void onPause() {
         super.onPause();
         is_ui_foreground_ = false;
     }
 
+    /**
+     * Toaster de l'appli : uniquement si on a le focus
+     */
     public void showToast(String text) {
-        if(is_ui_foreground_) {
+        if (is_ui_foreground_) {
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Finit la partie en cours et en relance une autre
+     */
     public void finishGame() {
         //On poste pour ne pas avoir l'erreur comme quoi on lance depuis un autre thread :
         //>> W/WebView﹕ java.lang.Throwable: A WebView method was called on thread 'JavaBridge'. All WebView methods must be called on the same thread.
@@ -222,7 +335,9 @@ public class MorpionActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //Mettre la bare dans la webView
-                web_app_.showCrossedLine();
+                if (game_engine_.getWinner() != GameEngine.PlayerType.None) { //Pas de bare pour un match nul
+                    web_app_.showCrossedLine();
+                }
                 //Affichage des scores
                 text_game_counter_.setText(String.valueOf(game_engine_.getGameCounter()));
                 text_score_player_.setText(String.valueOf(game_engine_.getScorePlayer()));
@@ -241,6 +356,9 @@ public class MorpionActivity extends AppCompatActivity {
         }, 3000);
     }
 
+    /**
+     * Lance une nouvelle partie
+     */
     public void newGame() {
         //On poste pour ne pas avoir l'erreur comme quoi on lance depuis un autre thread :
         //>> W/WebView﹕ java.lang.Throwable: A WebView method was called on thread 'JavaBridge'. All WebView methods must be called on the same thread.
