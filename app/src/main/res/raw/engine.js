@@ -17,6 +17,7 @@ function addGridElemSafe(row, col, el){
     }
 }
 
+//Ajotue un élément à la grille non safe (ordinateur)
 function triggerAddGridElem(row, col, el){
     $("#row-" + row + " .col-" + col + ":first")
     .empty()
@@ -27,6 +28,7 @@ function triggerAddGridElem(row, col, el){
     );
 }
 
+//Efface la grille
 function triggerCleanup(){
     $("#grid tr td").each(function(){
         $(this).empty();
@@ -39,6 +41,7 @@ function triggerCleanup(){
     });
 }
 
+//Affiche la ligne oblique sur la combinaison gagnante
 function triggerCrossedLine(combination){
 
     var animation_duration = 0; //miliseconds
@@ -80,6 +83,7 @@ function triggerCrossedLine(combination){
         $("#crossed-line-vert-rl").show(animation_duration);
 }
 
+//Initialise les controler JS
 $("document").ready(function(){
     $("#app .crossed-line").each(function(){
         $(this).hide();

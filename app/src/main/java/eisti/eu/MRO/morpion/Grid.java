@@ -195,9 +195,9 @@ public class Grid implements Cloneable {
     }
 
     /**
-     * Accès interne à la grille
+     * Retourne la grille sous forme Javascript Array
      *
-     * @return la grille interne
+     * @return string avec les valeurs en JS
      */
     public final String asJSArray() {
         StringBuilder sb = new StringBuilder();

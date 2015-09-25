@@ -220,7 +220,7 @@ public class MorpionActivity extends AppCompatActivity {
 
         Log.i(TAG, "Chargement des vues des scores terminé.");
 
-        //Initialisation de la web view et de son engin
+        //Initialisation de la web view et de son engine
         web_app_ = new WebApp(this);
         web_view_ = (WebView) findViewById(R.id.web_view);
         WebSettings webSettings = web_view_.getSettings();

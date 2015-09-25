@@ -25,7 +25,7 @@ public class GameEngine {
      */
     private static ArrayList<Grid> winning_grid_list_ = new ArrayList<>();
     /**
-     * Joueur courent
+     * Joueur courant
      */
     private PlayerType current_player_;
     /**
@@ -61,7 +61,7 @@ public class GameEngine {
      */
     private Handler delayed_handler_;
     /**
-     * Toast courent, pour être tué par le webApp quand le joueur a joué
+     * Toast courant, pour être tué par le webApp quand le joueur a joué
      */
     private Runnable player_toaster_;
 
@@ -498,7 +498,7 @@ public class GameEngine {
     }
 
     /**
-     * Retourne le joueur courent
+     * Retourne le joueur courant
      *
      * @return
      */
