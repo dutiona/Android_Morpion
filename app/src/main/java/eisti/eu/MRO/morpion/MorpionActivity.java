@@ -24,7 +24,7 @@ public class MorpionActivity extends AppCompatActivity {
     private static final String TAG = "MorpionActivity";
 
     public static final Grid.CelElement PLAYER_ELEMENT = Grid.CelElement.Circle;
-    public static final DifficultyConsistency.DifficultyLevel DEFAULT_DIFFICULTY = DifficultyConsistency.DifficultyLevel.NORMAL;
+    public static final DifficultyConsistency.DifficultyLevel DEFAULT_DIFFICULTY = DifficultyConsistency.DifficultyLevel.Normal;
     public static final GameEngine.PlayerType DEFAULT_FIRST_PLAYER = GameEngine.PlayerType.Human;
 
     //Models

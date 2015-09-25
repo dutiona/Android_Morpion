@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+
 import android.os.Handler;
 
 /**
@@ -56,15 +57,15 @@ public class GameEngine {
         return winning_combination_;
     }
 
-    public int getScorePlayer(){
+    public int getScorePlayer() {
         return score_player_;
     }
 
-    public int getScoreOpponent(){
+    public int getScoreOpponent() {
         return score_opponent_;
     }
 
-    public int getGameCounter(){
+    public int getGameCounter() {
         return game_counter_;
     }
 
@@ -76,23 +77,29 @@ public class GameEngine {
 
         delayed_handler_ = new Handler();
 
-        if (current_player_ == PlayerType.Computer) {
-            doComputerTurn();
-        } else {
-            doPlayerTurn();
-        }
+
+        //On lance avec swapTurn (donc il faut inverser le current_player)
+        current_player_ = getOppositePlayer(current_player_);
+        swapTurn();
     }
 
     public void swapTurn() {
         current_player_ = getOppositePlayer(current_player_);
 
         //Il peut y avoir match nul
-        if(hasWinner() || isFinished()){
+        if (isFinished()) {
             game_counter_++;
-            score_opponent_ += getWinner() == PlayerType.Computer ? 1 : 0;
-            score_player_ += getWinner() == PlayerType.Human ? 1 : 0;
+            if (!hasWinner()) {
+                context_.showToast(context_.getString(R.string.noone_win));
+            } else if (getWinner() == PlayerType.Computer) {
+                context_.showToast(context_.getString(R.string.computer_win));
+                score_opponent_++;
+            } else if (getWinner() == PlayerType.Human) {
+                context_.showToast(context_.getString(R.string.player_win));
+                score_player_++;
+            }
             context_.finishGame();
-        }else {
+        } else {
 
             if (current_player_ == PlayerType.Computer) {
                 context_.showToast(context_.getString(R.string.computer_about_to_play));
@@ -120,7 +127,7 @@ public class GameEngine {
         delayed_handler_.postDelayed(player_toaster_, 5000);
     }
 
-    public void cancelDelayedToaster(){
+    public void cancelDelayedToaster() {
         delayed_handler_.removeCallbacks(player_toaster_);
     }
 
@@ -161,10 +168,10 @@ public class GameEngine {
         return false;
     }
 
-    public boolean isFinished(){
-        for(int i = 0; i < context_.getGrid().getSize(); i++){
-            for(int j = 0; j < context_.getGrid().getSize(); j++){
-                if(context_.getGrid().isEmpty(i, j)){
+    public boolean isFinished() {
+        for (int i = 0; i < context_.getGrid().getSize(); i++) {
+            for (int j = 0; j < context_.getGrid().getSize(); j++) {
+                if (context_.getGrid().isEmpty(i, j)) {
                     return false;
                 }
             }

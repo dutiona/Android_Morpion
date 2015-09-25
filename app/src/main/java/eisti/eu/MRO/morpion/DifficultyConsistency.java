@@ -15,7 +15,7 @@ public class DifficultyConsistency implements View.OnTouchListener {
     private static final String TAG = "DifficultyConsistency";
 
     public enum DifficultyLevel {
-        EASY, NORMAL, IMPOSSIBLE
+        Easy, Normal, Impossible
     }
 
     private ArrayList<ToggleButton> buttons_;
@@ -32,24 +32,20 @@ public class DifficultyConsistency implements View.OnTouchListener {
         }
 
         //Première consistence visuelle manuelle
-        if (difficulty_ == DifficultyLevel.EASY) {
-            context_.getButtonEasy().setChecked(true);
-        } else if (difficulty_ == DifficultyLevel.NORMAL) {
-            context_.getButtonNormal().setChecked(true);
-        } else if (difficulty_ == DifficultyLevel.IMPOSSIBLE) {
-            context_.getButtonImpossible().setChecked(true);
-        }
+        context_.getButtonEasy().setChecked(difficulty_ == DifficultyLevel.Easy);
+        context_.getButtonNormal().setChecked(difficulty_ == DifficultyLevel.Normal);
+        context_.getButtonImpossible().setChecked(difficulty_ == DifficultyLevel.Impossible);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         ToggleButton current_button = (ToggleButton) v;
         if (current_button == context_.getButtonEasy()) {
-            difficulty_ = DifficultyLevel.EASY;
+            difficulty_ = DifficultyLevel.Easy;
         } else if (current_button == context_.getButtonNormal()) {
-            difficulty_ = DifficultyLevel.NORMAL;
+            difficulty_ = DifficultyLevel.Normal;
         } else if (current_button == context_.getButtonImpossible()) {
-            difficulty_ = DifficultyLevel.IMPOSSIBLE;
+            difficulty_ = DifficultyLevel.Impossible;
         } else {
             return false;
         }
