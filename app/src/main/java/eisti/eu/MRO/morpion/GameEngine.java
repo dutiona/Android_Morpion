@@ -80,14 +80,12 @@ public class GameEngine {
 
         delayed_handler_ = new Handler();
 
-
+        Log.i(TAG, "Lancement de la première partie...");
         //On lance avec swapTurn (donc il faut inverser le current_player, sauf que c'est déjà fait avec newGame() !)
         swapTurn();
     }
 
     public void swapTurn() {
-        current_player_ = getOppositePlayer(current_player_);
-
         //Il peut y avoir match nul
         if (isFinished()) {
             game_counter_++;
@@ -102,6 +100,9 @@ public class GameEngine {
             }
             context_.finishGame();
         } else {
+
+            //On swap, et on joue
+            current_player_ = getOppositePlayer(current_player_);
 
             if (current_player_ == PlayerType.Computer) {
                 context_.showToast(context_.getString(R.string.computer_about_to_play));
@@ -122,7 +123,6 @@ public class GameEngine {
     private void doPlayerTurn() {
         player_toaster_ = new Runnable() {
             public void run() {
-                Log.i(TAG, "Lancement de la première partie...");
                 context_.showToast(context_.getString(R.string.player_turn_to_play));
                 doPlayerTurn();
             }
@@ -169,10 +169,15 @@ public class GameEngine {
 
         PlayerType whoToCheck = getCurrentPlayer();
         Grid.CelElement whatToCheck = whoToCheck == PlayerType.Human ? MorpionActivity.PLAYER_ELEMENT : Grid.getOppositeCelElement(MorpionActivity.PLAYER_ELEMENT);
+        Log.i(TAG, "what to check : " + whatToCheck.toString());
+        Log.i(TAG, "who to check : " + whoToCheck.toString());
         for (Grid grid : winning_grid_list_) {
             if (compare(grid, context_.getGrid(), whatToCheck)) {
                 winner_ = whoToCheck;
                 winning_combination_ = grid;
+                Log.i(TAG, "Joueur " + winner_.toString() + " a gagné avec cette combinaison : ");
+                winning_combination_.dumpToConsole();
+                context_.getGrid().dumpToConsole();
                 return true;
             }
         }
@@ -181,6 +186,9 @@ public class GameEngine {
             if (compare(grid, context_.getGrid(), Grid.getOppositeCelElement(whatToCheck))) {
                 winner_ = getOppositePlayer(whoToCheck);
                 winning_combination_ = grid;
+                Log.i(TAG, "Joueur " + winner_.toString() + " a gagné avec cette combinaison : ");
+                winning_combination_.dumpToConsole();
+                context_.getGrid().dumpToConsole();
                 return true;
             }
         }
@@ -192,7 +200,7 @@ public class GameEngine {
     private boolean compare(Grid whateverGrid, Grid testedGrid, Grid.CelElement whatToCheck) {
         for (int i = 0; i < whateverGrid.getSize(); i++) {
             for (int j = 0; j < whateverGrid.getSize(); j++) {
-                if (!Grid.isCelValueEqual(whatToCheck, whateverGrid.getValue(i, j), testedGrid.getValue(i, j))) {
+                if(whateverGrid.isWhatever(i, j) && !testedGrid.isEqual(i, j, whatToCheck)){
                     return false;
                 }
             }

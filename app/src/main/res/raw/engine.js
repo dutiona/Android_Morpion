@@ -24,55 +24,57 @@ function triggerCleanup(){
 
     var animation_duration = 500; //ms
 
-    $("#grid .crossed-line").each(function(){
+    $("#app .crossed-line").each(function(){
         $(this).hide(animation_duration);
     });
 }
 
 function triggerCrossedLine(combination){
 
-    var animation_duration = 2000; //ms
-
-    //Colonne
+    var animation_duration = 1500; //miliseconds
 
     //Diag haut gauche -> bas droite
-    if(combination[0] == [0, 0] && combination[1] == [1, 1] && combination[2] == [2, 2])
+    if(combination[0][0] == 'whatever' && combination[1][1] == 'whatever' && combination[2][2] == 'whatever')
         $("#crossed-line-diag-lt2rb").show(animation_duration);
 
     //Diag haut droite -> bas gauche
-    if(combination[0] == [2, 0] && combination[1] == [1, 1] && combination[2] == [0, 2])
+    if(combination[2][0] == 'whatever' && combination[1][1] == 'whatever' && combination[0][2] == 'whatever')
         $("#crossed-line-diag-rt2lb").show(animation_duration);
 
     //Ligne
 
     //Ligne du haut
-    if(combination[0] == [0, 0] && combination[1] == [0, 1] && combination[2] == [0, 2])
+    if(combination[0][0] == 'whatever' && combination[0][1] == 'whatever' && combination[0][2] == 'whatever')
         $("#crossed-line-hori-tl").show(animation_duration);
 
     //Ligne du milieu
-    if(combination[0] == [1, 0] && combination[1] == [1, 1] && combination[2] == [1, 2])
+    if(combination[1][0] == 'whatever' && combination[1][1] == 'whatever' && combination[1][2] == 'whatever')
         $("#crossed-line-hori-ml").show(animation_duration);
 
     //Ligne du bas
-    if(combination[0] == [2, 0] && combination[1] == [2, 1] && combination[2] == [2, 2])
+    if(combination[2][0] == 'whatever' && combination[2][1] == 'whatever' && combination[2][2] == 'whatever')
         $("#crossed-line-hori-bl").show(animation_duration);
 
     //Colonne
 
     //Colonne de gauche
-    if(combination[0] == [0, 0] && combination[1] == [1, 0] && combination[2] == [2, 0])
+    if(combination[0][0] == 'whatever' && combination[1][0] == 'whatever' && combination[2][0] == 'whatever')
         $("#crossed-line-vert-ll").show(animation_duration);
 
     //Ligne du bas
-    if(combination[0] == [0, 1] && combination[1] == [1, 1] && combination[2] == [2, 1])
+    if(combination[0][1] == 'whatever' && combination[1][1] == 'whatever' && combination[2][1] == 'whatever')
         $("#crossed-line-vert-ml").show(animation_duration);
 
     //Ligne du bas
-    if(combination[0] == [0, 2] && combination[1] == [1,21] && combination[2] == [2, 2])
+    if(combination[0][2] == 'whatever' && combination[1][2] == 'whatever' && combination[2][2] == 'whatever')
         $("#crossed-line-vert-rl").show(animation_duration);
 }
 
 $("document").ready(function(){
+    $("#app .crossed-line").each(function(){
+        $(this).hide();
+    });
+
     //Récupération de l'objet "player" pour les binds
     var player_element = Android.getPlayerElement();
     //Bind des events sur le tableau (pour le player uniquement : l'ordi a pas besoin de cliquer !)

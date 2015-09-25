@@ -1,8 +1,14 @@
 package eisti.eu.MRO.morpion;
 
+import android.util.JsonWriter;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Collection;
+
 
 /**
  * ${PACKAGE_NAME} in Morpion
@@ -19,23 +25,38 @@ public class WebApp {
         context_ = c;
     }
 
-    private static void callJavaScript(WebView view, String methodName, Object... params) {
+    private static void callJavaScript(WebView view, String methodName, boolean raw, Object... params) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("javascript:try{");
-        stringBuilder.append(methodName);
-        stringBuilder.append("(");
+        stringBuilder.append("javascript:try{").append(methodName).append("(");
         String separator = "";
-        for (Object param : params) {
-            stringBuilder.append(separator);
-            separator = ",";
-            if (param instanceof String) {
-                stringBuilder.append("'");
+        if(raw){
+            for (Object param : params) {
+                stringBuilder.append(separator);
+                separator = ",";
+                stringBuilder.append(param.toString());
             }
-            stringBuilder.append(param);
-            if (param instanceof String) {
-                stringBuilder.append("'");
+        }else {
+            for (Object param : params) {
+                stringBuilder.append(separator);
+                separator = ",";
+                if (param instanceof Iterable) {
+                    stringBuilder.append("[");
+                    for (Object p : (Iterable) param) {
+                        if (p instanceof Iterable) {
+                            stringBuilder.append("[");
+                            for (Object _ : (Iterable) p) {
+                                stringBuilder.append("'").append(_.toString()).append("'");
+                            }
+                            stringBuilder.append("]");
+                        } else {
+                            stringBuilder.append("'").append(p.toString()).append("'");
+                        }
+                    }
+                    stringBuilder.append("]");
+                } else {
+                    stringBuilder.append("'").append(param.toString()).append("'");
+                }
             }
-
         }
         stringBuilder.append(")}catch(error){console.error(error.message);}");
         final String call = stringBuilder.toString();
@@ -45,11 +66,11 @@ public class WebApp {
     }
 
     public void newGame() {
-        callJavaScript(context_.getWebView(), "triggerCleanup");
+        callJavaScript(context_.getWebView(), "triggerCleanup", false);
     }
 
     public void showCrossedLine() {
-        callJavaScript(context_.getWebView(), "triggerCrossedLine", context_.getGameEngine().getWinningCombination());
+        callJavaScript(context_.getWebView(), "triggerCrossedLine", true, context_.getGameEngine().getWinningCombination().asJSArray());
     }
 
     @JavascriptInterface
@@ -65,7 +86,12 @@ public class WebApp {
             showToast(context_.getResources().getString(R.string.toast_cell_already_used));
         } else {
             context_.getGameEngine().cancelDelayedToaster();
-            context_.getGameEngine().swapTurn();
+            context_.getWebView().post(new Runnable() {
+                @Override
+                public void run() {
+                    context_.getGameEngine().swapTurn();
+                }
+            });
         }
         return allowed;
     }

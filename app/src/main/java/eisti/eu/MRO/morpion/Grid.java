@@ -115,6 +115,18 @@ public class Grid {
     }
 
     /**
+     * Vérifie si la valeur à l'emplacement donnée et la valeur en paramètre sont égales
+     *
+     * @param row numéro de la colonne
+     * @param col numéro de la ligne
+     * @param v   valeur à comparer
+     * @return résultat de la comparaison
+     */
+    public boolean isEqual(int row, int col, CelElement v) {
+        return getValue(row, col) == v;
+    }
+
+    /**
      * Récupère la valeur de la case
      *
      * @param row numéro de la colonne
@@ -165,6 +177,30 @@ public class Grid {
             Log.i(TAG, buffer);
         }
         Log.i(TAG, "");
+    }
+
+    /**
+     * Accès interne à la grille
+     *
+     * @return la grille interne
+     */
+    public final String asJSArray() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        String separator = "";
+        for (int i = 0; i < getSize(); i++) {
+            sb.append(separator).append("[");
+            separator = "";
+            for (int j = 0; j < getSize(); j++) {
+                sb.append(separator).append("'").append(grid_[i][j].toString().toLowerCase()).append("'");
+                separator = ", ";
+            }
+            separator = ", ";
+            sb.append("]");
+        }
+        sb.append("]");
+        Log.i(TAG, "JS version=" + sb.toString());
+        return sb.toString();
     }
 
     /**

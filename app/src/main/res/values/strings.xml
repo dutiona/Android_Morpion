@@ -8,7 +8,7 @@
     <string name="score_player_label">Vous</string>
 
     <string name="toast_cell_already_used">Cette case est déjà prise !</string>
-    <string name="player_win">Vous avez gagné \o/ !</string>
+    <string name="player_win">Vous avez gagné \\o/ !</string>
     <string name="computer_win">Vous avez perdu :( !</string>
     <string name="noone_win">Match nul !</string>
     <string name="button_easy">Facile</string>

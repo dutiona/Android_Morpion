@@ -182,7 +182,7 @@ public class MorpionActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
             //Pas bien de faire comme ça !
-            //System.exit(0);
+            System.exit(0);
             //Il vaut mieux faire comme ça !
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
@@ -215,13 +215,20 @@ public class MorpionActivity extends AppCompatActivity {
     }
 
     public void finishGame() {
-        //Mettre la bare dans la webView
-        web_app_.showCrossedLine();
-
-        //Affichage des scores
-        text_game_counter_.setText(String.valueOf(game_engine_.getGameCounter()));
-        text_score_player_.setText(String.valueOf(game_engine_.getScorePlayer()));
-        text_score_opponent_.setText(String.valueOf(game_engine_.getScoreOpponent()));
+        //On poste pour ne pas avoir l'erreur comme quoi on lance depuis un autre thread :
+        //>> W/WebView﹕ java.lang.Throwable: A WebView method was called on thread 'JavaBridge'. All WebView methods must be called on the same thread.
+        //Ce qui arrivera car toute la routine est asynchrone à la vue
+        web_view_.post(new Runnable() {
+            @Override
+            public void run() {
+                //Mettre la bare dans la webView
+                web_app_.showCrossedLine();
+                //Affichage des scores
+                text_game_counter_.setText(String.valueOf(game_engine_.getGameCounter()));
+                text_score_player_.setText(String.valueOf(game_engine_.getScorePlayer()));
+                text_score_opponent_.setText(String.valueOf(game_engine_.getScoreOpponent()));
+            }
+        });
 
         //Lance la partie suivante
         showToast(getString(R.string.next_game_message));
@@ -235,7 +242,16 @@ public class MorpionActivity extends AppCompatActivity {
     }
 
     public void newGame() {
-        web_app_.newGame();
+        //On poste pour ne pas avoir l'erreur comme quoi on lance depuis un autre thread :
+        //>> W/WebView﹕ java.lang.Throwable: A WebView method was called on thread 'JavaBridge'. All WebView methods must be called on the same thread.
+        //Ce qui arrivera car toute la routine est asynchrone à la vue
+        web_view_.post(new Runnable() {
+            @Override
+            public void run() {
+                web_app_.newGame();
+            }
+        });
+        grid_ = new Grid(3);
         game_engine_.newGame();
     }
 }
