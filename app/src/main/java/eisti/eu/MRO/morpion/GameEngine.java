@@ -1,8 +1,10 @@
 package eisti.eu.MRO.morpion;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import android.os.Handler;
 
 /**
  * Created by MR244047 on 24/09/2015.
@@ -31,21 +33,39 @@ public class GameEngine {
 
     private MorpionActivity context_;
 
+    private Handler delayed_handler_;
+    private Runnable player_toaster_;
+
 
     public GameEngine(MorpionActivity ctx, PlayerType starting_player) {
         starting_player_ = starting_player;
         current_player_ = starting_player_;
         winner_ = PlayerType.None;
         context_ = ctx;
+
+        score_player_ = 0;
+        score_opponent_ = 0;
+        game_counter_ = 0;
     }
 
     public PlayerType getWinner() {
         return winner_;
     }
 
-
     public Grid getWinningCombination() {
         return winning_combination_;
+    }
+
+    public int getScorePlayer(){
+        return score_player_;
+    }
+
+    public int getScoreOpponent(){
+        return score_opponent_;
+    }
+
+    public int getGameCounter(){
+        return game_counter_;
     }
 
     public void newGame() {
@@ -54,6 +74,8 @@ public class GameEngine {
         winner_ = PlayerType.None;
         winning_combination_ = null;
 
+        delayed_handler_ = new Handler();
+
         if (current_player_ == PlayerType.Computer) {
             doComputerTurn();
         } else {
@@ -61,15 +83,52 @@ public class GameEngine {
         }
     }
 
-    private void doPlayerTurn() {
+    public void swapTurn() {
+        current_player_ = getOppositePlayer(current_player_);
 
+        //Il peut y avoir match nul
+        if(hasWinner() || isFinished()){
+            game_counter_++;
+            score_opponent_ += getWinner() == PlayerType.Computer ? 1 : 0;
+            score_player_ += getWinner() == PlayerType.Human ? 1 : 0;
+            context_.finishGame();
+        }else {
+
+            if (current_player_ == PlayerType.Computer) {
+                context_.showToast(context_.getString(R.string.computer_about_to_play));
+                delayed_handler_.postDelayed(new Runnable() {
+                    public void run() {
+                        doComputerTurn();
+                        swapTurn();
+                    }
+                }, 2000);
+            } else {
+                doPlayerTurn();
+                //C'est le controler WebApp qui appellera le swapTurn quand le joueur aura joué
+            }
+
+        }
+    }
+
+    private void doPlayerTurn() {
+        player_toaster_ = new Runnable() {
+            public void run() {
+                Log.i(TAG, "Lancement de la première partie...");
+                context_.showToast(context_.getString(R.string.player_turn_to_play));
+            }
+        };
+        delayed_handler_.postDelayed(player_toaster_, 5000);
+    }
+
+    public void cancelDelayedToaster(){
+        delayed_handler_.removeCallbacks(player_toaster_);
     }
 
     public Pair<Integer, Integer> doComputerTurn() {
-        //Trouve une stratégie de jeux pour l'IA.
-
         //On a besoin des combinaisons gagnantes
         lazyInit();
+
+        //TODO Trouve une stratégie de jeux pour l'IA.
 
         return null;
     }
@@ -100,6 +159,17 @@ public class GameEngine {
         }
 
         return false;
+    }
+
+    public boolean isFinished(){
+        for(int i = 0; i < context_.getGrid().getSize(); i++){
+            for(int j = 0; j < context_.getGrid().getSize(); j++){
+                if(context_.getGrid().isEmpty(i, j)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 

@@ -18,4 +18,6 @@
     <string name="score_player_default">0</string>
     <string name="game_counter_default">0</string>
     <string name="score_opponent_default">0</string>
+    <string name="player_turn_to_play">C\'est à vous de jouer...</string>
+    <string name="computer_about_to_play">L\'ordinateur se prépare à jouer...</string>
 </resources>

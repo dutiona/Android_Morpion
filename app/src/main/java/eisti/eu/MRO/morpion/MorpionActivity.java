@@ -179,30 +179,10 @@ public class MorpionActivity extends AppCompatActivity {
         //Mettre la bare dans la webView
         web_app_.showCrossedLine();
 
-
-        //Mettre à jour les scores
-        GameEngine.PlayerType winner = game_engine_.getWinner();
-
-        int incr_score_player = 0;
-        int incr_score_opponent = 0;
-        int incr_game_counter = 0;
-
-        if (winner == GameEngine.PlayerType.None)
-            incr_game_counter++;
-
-        if (winner == GameEngine.PlayerType.Human) {
-            incr_score_player++;
-            incr_game_counter++;
-        }
-
-        if (winner == GameEngine.PlayerType.Computer) {
-            incr_score_opponent++;
-            incr_game_counter++;
-        }
-
-        text_game_counter_.setText(String.valueOf(Integer.valueOf(text_game_counter_.getText().toString()) + incr_game_counter));
-        text_score_player_.setText(String.valueOf(Integer.valueOf(text_score_player_.getText().toString()) + incr_score_player));
-        text_score_opponent_.setText(String.valueOf(Integer.valueOf(text_score_opponent_.getText().toString()) + incr_score_opponent));
+        //Affichage des scores
+        text_game_counter_.setText(String.valueOf(game_engine_.getGameCounter()));
+        text_score_player_.setText(String.valueOf(game_engine_.getScorePlayer()));
+        text_score_opponent_.setText(String.valueOf(game_engine_.getScoreOpponent()));
 
         //Lance la partie suivante
         showToast(getString(R.string.next_game_message));

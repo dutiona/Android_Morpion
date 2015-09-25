@@ -40,6 +40,9 @@ public class WebApp {
         boolean allowed = context_.getGrid().setValueSafe(row, col, el == "circle" ? Grid.CelElement.Circle : Grid.CelElement.Cross);
         if (!allowed) {
             showToast(context_.getResources().getString(R.string.toast_cell_already_used));
+        }else{
+            context_.getGameEngine().cancelDelayedToaster();
+            context_.getGameEngine().swapTurn();
         }
         return allowed;
     }
