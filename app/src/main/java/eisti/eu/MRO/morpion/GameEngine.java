@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import android.os.Handler;
 
 /**
+ * ${PACJAGE_NAME} in Morpion
+ *
  * Created by MR244047 on 24/09/2015.
+ *
  */
 public class GameEngine {
 
@@ -78,8 +81,7 @@ public class GameEngine {
         delayed_handler_ = new Handler();
 
 
-        //On lance avec swapTurn (donc il faut inverser le current_player)
-        current_player_ = getOppositePlayer(current_player_);
+        //On lance avec swapTurn (donc il faut inverser le current_player, sauf que c'est déjà fait avec newGame() !)
         swapTurn();
     }
 
@@ -89,7 +91,7 @@ public class GameEngine {
         //Il peut y avoir match nul
         if (isFinished()) {
             game_counter_++;
-            if (!hasWinner()) {
+            if (getWinner() == PlayerType.None) {
                 context_.showToast(context_.getString(R.string.noone_win));
             } else if (getWinner() == PlayerType.Computer) {
                 context_.showToast(context_.getString(R.string.computer_win));
@@ -122,9 +124,10 @@ public class GameEngine {
             public void run() {
                 Log.i(TAG, "Lancement de la première partie...");
                 context_.showToast(context_.getString(R.string.player_turn_to_play));
+                doPlayerTurn();
             }
         };
-        delayed_handler_.postDelayed(player_toaster_, 5000);
+        delayed_handler_.postDelayed(player_toaster_, 8000);
     }
 
     public void cancelDelayedToaster() {
@@ -144,11 +147,28 @@ public class GameEngine {
         return current_player_;
     }
 
-    public boolean hasWinner() {
+    public boolean isFinished() {
+        if (hasWinner()) {
+            return true;
+        } else {
+            for (int i = 0; i < context_.getGrid().getSize(); i++) {
+                for (int j = 0; j < context_.getGrid().getSize(); j++) {
+                    if (context_.getGrid().isEmpty(i, j)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    private boolean hasWinner() {
         lazyInit();
 
+        context_.getGrid().dumpToConsole();
+
         PlayerType whoToCheck = getCurrentPlayer();
-        Grid.CelElement whatToCheck = whoToCheck == PlayerType.Human ? context_.PLAYER_ELEMENT : Grid.getOppositeCelElement(context_.PLAYER_ELEMENT);
+        Grid.CelElement whatToCheck = whoToCheck == PlayerType.Human ? MorpionActivity.PLAYER_ELEMENT : Grid.getOppositeCelElement(MorpionActivity.PLAYER_ELEMENT);
         for (Grid grid : winning_grid_list_) {
             if (compare(grid, context_.getGrid(), whatToCheck)) {
                 winner_ = whoToCheck;
@@ -168,21 +188,10 @@ public class GameEngine {
         return false;
     }
 
-    public boolean isFinished() {
-        for (int i = 0; i < context_.getGrid().getSize(); i++) {
-            for (int j = 0; j < context_.getGrid().getSize(); j++) {
-                if (context_.getGrid().isEmpty(i, j)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
 
     private boolean compare(Grid whateverGrid, Grid testedGrid, Grid.CelElement whatToCheck) {
         for (int i = 0; i < whateverGrid.getSize(); i++) {
-            for (int j = 0; i < whateverGrid.getSize(); j++) {
+            for (int j = 0; j < whateverGrid.getSize(); j++) {
                 if (!Grid.isCelValueEqual(whatToCheck, whateverGrid.getValue(i, j), testedGrid.getValue(i, j))) {
                     return false;
                 }
@@ -217,15 +226,15 @@ public class GameEngine {
             winning_grid_list_.add(win_line_1);
 
             Grid win_line_2 = new Grid(3);
-            win_line_1.setValue(1, 0, Grid.CelElement.Whatever);
-            win_line_1.setValue(1, 1, Grid.CelElement.Whatever);
-            win_line_1.setValue(1, 2, Grid.CelElement.Whatever);
+            win_line_2.setValue(1, 0, Grid.CelElement.Whatever);
+            win_line_2.setValue(1, 1, Grid.CelElement.Whatever);
+            win_line_2.setValue(1, 2, Grid.CelElement.Whatever);
             winning_grid_list_.add(win_line_2);
 
             Grid win_line_3 = new Grid(3);
-            win_line_1.setValue(2, 0, Grid.CelElement.Whatever);
-            win_line_1.setValue(2, 1, Grid.CelElement.Whatever);
-            win_line_1.setValue(2, 2, Grid.CelElement.Whatever);
+            win_line_3.setValue(2, 0, Grid.CelElement.Whatever);
+            win_line_3.setValue(2, 1, Grid.CelElement.Whatever);
+            win_line_3.setValue(2, 2, Grid.CelElement.Whatever);
             winning_grid_list_.add(win_line_3);
 
             /* Colonnes */

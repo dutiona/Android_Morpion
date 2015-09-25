@@ -1,5 +1,7 @@
 package eisti.eu.MRO.morpion;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +28,8 @@ public class MorpionActivity extends AppCompatActivity {
     public static final Grid.CelElement PLAYER_ELEMENT = Grid.CelElement.Circle;
     public static final DifficultyConsistency.DifficultyLevel DEFAULT_DIFFICULTY = DifficultyConsistency.DifficultyLevel.Normal;
     public static final GameEngine.PlayerType DEFAULT_FIRST_PLAYER = GameEngine.PlayerType.Human;
+
+    private boolean is_ui_foreground_;
 
     //Models
     private Grid grid_;
@@ -98,10 +102,19 @@ public class MorpionActivity extends AppCompatActivity {
     }
 
 
+
     @Override
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"}) //Avertissement de sécurité concernant l'activation de Javascript
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morpion);
+
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+            return; // add this to prevent from doing unnecessary stuffs
+        }
+
+        is_ui_foreground_ = true;
 
         //Initialisation des models
         grid_ = new Grid(3);
@@ -155,7 +168,7 @@ public class MorpionActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_morpion, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     //Méthode générée par défaut
@@ -168,15 +181,37 @@ public class MorpionActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_exit) {
-            System.exit(0);
+            //Pas bien de faire comme ça !
+            //System.exit(0);
+            //Il vaut mieux faire comme ça !
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
+            finish();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        is_ui_foreground_ = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        is_ui_foreground_ = false;
+    }
+
     public void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        if(is_ui_foreground_) {
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void finishGame() {
